@@ -4,7 +4,6 @@ from office365.sharepoint.files.file import File
 from office365.sharepoint.client_context import ClientContext
 from office365.runtime.auth.authentication_context import AuthenticationContext
 
-
 # SharePoint and Folder urls
 sharepoint_url = "https://ositsgps.sharepoint.com/:f:/s/ElectronicX/En8NKEJoIHNCv3AR1IjW2qoBzJC0ejSO3F6Qe_w3JAy8dw?e=89Qw4N"
 folder_in_sharepoint = "https://ositsgps.sharepoint.com/:f:/s/ElectronicX/Er6IbqKJHYRAhP5EIXixNdUBO8NCOKUtoZmULUeu-WesSQ?e=HgwH8P"
