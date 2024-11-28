@@ -1,6 +1,5 @@
 import pandas as pd
 import streamlit as st
-import office365 as of
 from office365.sharepoint.client_context import ClientContext
 from office365.runtime.auth.authentication_context import AuthenticationContext
 
