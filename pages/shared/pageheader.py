@@ -6,3 +6,4 @@ def page_header(titulo):
     
     """
     st.title(titulo)
+    st.divider()

@@ -11,10 +11,10 @@ st.set_page_config(
     page_title="PROZIS",
     page_icon="🔴",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
 
-page_header("Data Viewer")
+page_header("ProzisX - Logistics")
 
 
 col1, col2,col3, col4 = st.columns(4)
@@ -36,22 +36,7 @@ st.subheader("BOM file 📋")
 data_frame_view_edited = st.dataframe(data_frame_view_raw, use_container_width=True)
 
 st.divider()
-st.subheader("Quotation")
+st.subheader("Quotation details")
 col1, col2, col3, col4 = st.columns(4)
 with col1:
-    mpn = st.text_input("MPN", disabled=True)
-with col2:
     provider = st.selectbox("Provider:" , ("Arrow", "Rutronik"))
-with col3:
-    cost = st.text_input("Cost")
-
-    
-# Apresentar Dados
-st.divider()
-st.subheader("PCB price information")
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.text("Dados etc")
-with col3:
-    chart_data = pd.DataFrame(np.random.randn(20, 3), columns=["a", "b", "c"])
-    st.area_chart(chart_data)
