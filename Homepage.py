@@ -1,6 +1,8 @@
 import streamlit as st
 from pages.shared.pageheader import *
 from controller.Data_Viewer import *
+import numpy as np
+
 
 path = "./model/Projects"
 
@@ -28,15 +30,13 @@ with col4:
     if st.button("Load data",use_container_width=True, type="primary"):
         data_frame_view_raw = load_to_dataframe(path + "/" + project_name + "/" + subproject_name + "/BOM", "/BOM")
 
-st.divider()
-
-
 # Apresentar Tabela
+st.divider()
 st.subheader("BOM file 📋")
 data_frame_view_edited = st.dataframe(data_frame_view_raw, use_container_width=True)
 
 st.divider()
-st.subheader("Quotation editor ✏️")
+st.subheader("Quotation")
 col1, col2, col3, col4 = st.columns(4)
 with col1:
     mpn = st.text_input("MPN", disabled=True)
@@ -44,3 +44,14 @@ with col2:
     provider = st.selectbox("Provider:" , ("Arrow", "Rutronik"))
 with col3:
     cost = st.text_input("Cost")
+
+    
+# Apresentar Dados
+st.divider()
+st.subheader("PCB price information")
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.text("Dados etc")
+with col3:
+    chart_data = pd.DataFrame(np.random.randn(20, 3), columns=["a", "b", "c"])
+    st.area_chart(chart_data)
