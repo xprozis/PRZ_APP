@@ -2,10 +2,8 @@ import streamlit as st
 from pages.shared.pageheader import *
 from controller.Data_Viewer import *
 
-data_frame_view_raw = pd.DataFrame()
-data_frame_view_edited = pd.DataFrame()
-
 path = "./model/Projects"
+
 
 st.set_page_config(
     page_title="PROZIS",
@@ -26,24 +24,23 @@ with col2:
 with col4:
     st.text("")
     st.text("")
-    
     # Carregadmentos dos dados / Cabecalho da tabela
-    if st.button("Load data",use_container_width=True):
+    if st.button("Load data",use_container_width=True, type="primary"):
         data_frame_view_raw = load_to_dataframe(path + "/" + project_name + "/" + subproject_name + "/BOM", "/BOM")
 
 st.divider()
 
-if(not data_frame_view_raw.empty):
 
-    # Apresentar Tabela
-    st.subheader("BOM file")
-    data_frame_view_edited = st.dataframe(data_frame_view_raw, use_container_width=True)
+# Apresentar Tabela
+st.subheader("BOM file 📋")
+data_frame_view_edited = st.dataframe(data_frame_view_raw, use_container_width=True)
 
-    st.subheader("Quotation")
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        mpn = st.text_input("MPN", disabled=True)
-    with col2:
-        provider = st.selectbox("Provider:" , ("Arrow", "Rutronik"))
-    with col3:
-        cost = st.text_input("Cost")
+st.divider()
+st.subheader("Quotation editor ✏️")
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    mpn = st.text_input("MPN", disabled=True)
+with col2:
+    provider = st.selectbox("Provider:" , ("Arrow", "Rutronik"))
+with col3:
+    cost = st.text_input("Cost")
