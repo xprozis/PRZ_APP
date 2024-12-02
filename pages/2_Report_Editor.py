@@ -1,6 +1,6 @@
 import streamlit as st
 from pages.shared.pageheader import *
-from controller.Data_Viewer import *
+from controller.BOM_Editor_c import *
 
 df_bom_file = pd.DataFrame()
 df_quotation_file = pd.DataFrame()

@@ -1,7 +1,9 @@
 import streamlit as st
 from pages.shared.pageheader import *
-from controller.Data_Viewer import *
+from controller.BOM_Editor_c import *
 import os
+
+df_bom_file = pd.DataFrame()
 
 st.set_page_config(
     page_title="PROZIS HW Logistics",
