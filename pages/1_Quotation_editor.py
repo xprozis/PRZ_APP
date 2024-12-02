@@ -1,11 +1,13 @@
 import streamlit as st
 from pages.shared.pageheader import *
 from controller.Data_Viewer import *
-import os 
 
+quotation_create = False
+df_bom_quotation = pd.DataFrame()
+df_quotation_file = pd.DataFrame()
 
 st.set_page_config(
-    page_title="PROZIS",
+    page_title="PROZIS HW Logistics",
     page_icon="🔴",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -13,43 +15,40 @@ st.set_page_config(
 
 page_header("Quotation editor")
 
-if False:
-    col1, col2, col3, col4, col5 = st.columns(5)
-    with col1:
-        dir_list = os.listdir(path)
-        project_name = st.selectbox("Project name select:" , os.listdir(path))
-    with col2:
-        pcb_name = st.selectbox("PCB name select:" , os.listdir(path + "/" + project_name))
-    with col3:
-        pcb_version = st.selectbox("PCB version select:" , os.listdir(path + "/" + project_name + "/" + pcb_name))
-    with col4:
-        provider_name = st.selectbox("Quotation provider:", os.listdir(path + "/" + project_name+ "/" + pcb_name + "/" + pcb_version + "/Cost/"))
-    with col5:
-        quotation_version = st.selectbox("Quotation version:", os.listdir(path + "/" + project_name+ "/" + pcb_name + "/" + pcb_version + "/Cost/" + provider_name) )
-        
-        df_view = load_to_dataframe(path + "/" + project_name + "/" + pcb_name + "/" + pcb_version + "/Cost/" + provider_name + "/", quotation_version)
-
-    st.subheader(provider_name + " Quotation")
-    data_frame_view_edited = st.data_editor(df_view, use_container_width=True, height=400, disabled=False)
-
-
+st.subheader("Upload files")
 col1, col2 = st.columns(2)
 with col1:
-    st.subheader("BOM uploader")
-    bom_file = st.file_uploader(
-        "Drop here your BOM.xlsl file realted to your project", accept_multiple_files=False
-    )
-if bom_file is not None:
-    # Can be used wherever a "file-like" object is accepted:
-    dataframe = pd.read_csv(bom_file)
-    st.write(dataframe)
+    bom_file = st.file_uploader("Drop here your BOM.xlsl file realted to your project", type="xlsx")
+    if bom_file:
+        df_bom_file = pd.read_excel(bom_file)
+        df_bom_quotation = df_bom_file # DEV
+with col2:        
+    quotation_file = st.file_uploader("Drop here your COSTS.xlsl file realted to your project", type="xlsx")
+    if quotation_file:
+        df_quotation_file = pd.read_excel(quotation_file)
+    if st.button("Create new quotation", use_container_width=True):
+        quotation_create = True
 
-with col2:
-    st.subheader("Quotation uploader")
-    quotation_file = st.file_uploader(
-        "Drop here your QUOTATION.xlsl file realted to your project", accept_multiple_files=False
-    )
-    if quotation_file is not None:
-        # Can be used wherever a "file-like" object is accepted:
-        dataframe = pd.read_csv(quotation_file)
-        st.write(dataframe)
+# Page to create the quotation 
+if quotation_create:
+    # Title
+    st.subheader("Quotation Creator")
+
+    # Page Body
+
+    # Footer
+    col1,col2 = st.columns([4,1])
+    with col1:
+        if st.button("SAVE", type="primary", use_container_width=True):
+            view = False
+    with col2:
+        if st.button("CLOSE", use_container_width=True):
+            view = False
+
+st.divider()
+st.subheader("BOM + Quotation")
+if df_bom_quotation.empty and df_quotation_file.empty:
+    st.caption("No data to show.")
+else:
+    st.dataframe(df_bom_quotation)
+    st.dataframe(df_quotation_file)

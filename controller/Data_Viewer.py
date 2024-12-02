@@ -1,8 +1,9 @@
 import streamlit as st
 import pandas as pd
-import os
 
 
+df_bom_quotation = pd.DataFrame()
+quotation_create_flag = False
 
 def load_to_dataframe (path, name):
     """
