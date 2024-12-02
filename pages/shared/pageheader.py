@@ -1,9 +1,9 @@
 import streamlit as st
 
-def page_header(titulo):
+def page_header(title, description):
     """
     Gera um cabeçalho identico para todos
     
     """
-    st.title(titulo)
+    st.title(title,help=description)
     st.divider()
