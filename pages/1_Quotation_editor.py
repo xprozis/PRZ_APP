@@ -67,6 +67,7 @@ else:
     
     col1,col2,col3,col4 = st.columns(4)
     with col1:
-        st.text_input("Project Name", placeholder="File name", label_visibility="collapsed")
+        file_name = st.text_input("Project Name", placeholder="File name", label_visibility="collapsed")
     with col2:
-        st.button("Export Report", type="primary")
+        if st.button("Export Report", type="primary"):
+            report.to_excel(file_name + ".xlsx")
