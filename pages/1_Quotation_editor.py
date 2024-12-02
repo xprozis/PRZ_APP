@@ -70,4 +70,5 @@ else:
         file_name = st.text_input("Project Name", placeholder="File name", label_visibility="collapsed")
     with col2:
         if st.button("Export Report", type="primary"):
-            report.to_excel(file_name + ".xlsx")
+            path_save = "./model/Reports/"
+            report.to_excel(path_save + file_name + ".xlsx")
