@@ -17,5 +17,6 @@ quotation_file = st.file_uploader("Drop here your Report.xlsl file related to yo
 if quotation_file:
     df_quotation = pd.read_excel(quotation_file)
 
-# Create table
-df_bom_edited = st.data_editor(df_quotation, use_container_width=True)
+if not df_quotation.empty:
+    # Create table
+    df_bom_edited = st.data_editor(df_quotation, use_container_width=True)
