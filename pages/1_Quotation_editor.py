@@ -4,9 +4,10 @@ from controller.Data_Viewer import *
 
 
 
-df_bom_quotation = pd.DataFrame()
+df_bom_file = pd.DataFrame()
 df_quotation_file = pd.DataFrame()
-df_report = pd.DataFrame( columns=['MPN', 'Total_Qty_1', 'Unit_Price_1', 'Total_Qty_2', 'Unit_Price_2', 'Total_Qty_3', 'Unit_Price_3'])
+df_quotation_costum_file = pd.DataFrame( columns=['MPN', 'Total_Qty_1', 'Unit_Price_1', 'Total_Qty_2', 'Unit_Price_2', 'Total_Qty_3', 'Unit_Price_3'])
+
 
 quotation_create_view_flag = False 
 quotation_create_view_flag = set_global(quotation_create_view_flag)
@@ -20,23 +21,19 @@ st.set_page_config(
 
 page_header("Report Creator")
 
+# Upload data section
 st.subheader("Upload files")
 col1, col2 = st.columns(2)
 with col1:
     bom_file = st.file_uploader("Drop here your BOM.xlsl file realted to your project", type="xlsx")
     if bom_file:
         df_bom_file = pd.read_excel(bom_file)
-        df_bom_quotation = df_bom_file # DEV
 with col2:        
     quotation_file = st.file_uploader("Drop here your COSTS.xlsl file realted to your project", type="xlsx")
     if quotation_file:
         df_quotation_file = pd.read_excel(quotation_file)
-
-
-    if st.button("Create Quotation manually", use_container_width=True):
+    if st.button("Or insert quotation manually", use_container_width=True):
         quotation_create_view_flag = True
-
-
 
 # Page to create the quotation 
 if quotation_create_view_flag:
@@ -45,7 +42,7 @@ if quotation_create_view_flag:
         # Title
         st.subheader("Quotation Creator")
         # Page Body
-        new_df_report = st.data_editor(df_report, use_container_width=True)
+        df_quotation_file = st.data_editor(df_quotation_costum_file, use_container_width=True)
         
     # Footer
     col1,col2 = st.columns([4,1])
@@ -56,10 +53,20 @@ if quotation_create_view_flag:
         if st.button("Close", use_container_width=True):
             view = False
 
+# Data Join Table
 st.divider()
 st.subheader("Report (BOM + Quotation)")
-if df_bom_quotation.empty and df_quotation_file.empty:
-    st.caption("No data to show.")
+
+if df_bom_file.empty or df_quotation_file.empty:
+    st.caption("No data to show. Select the two files")
 else:
-    st.dataframe(df_bom_quotation)
-    st.dataframe(df_quotation_file)
+ 
+
+    report = report_maker(df_bom_file,df_quotation_file)
+    st.dataframe(report, height=500)
+    
+    col1,col2,col3,col4 = st.columns(4)
+    with col1:
+        st.text_input("Project Name", placeholder="File name", label_visibility="collapsed")
+    with col2:
+        st.button("Export Report", type="primary")
