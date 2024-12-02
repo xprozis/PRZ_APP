@@ -2,6 +2,7 @@ import streamlit as st
 from pages.shared.pageheader import *
 from controller.Data_Viewer import *
 
+import io
 
 
 df_bom_file = pd.DataFrame()
@@ -29,7 +30,7 @@ with col1:
     if bom_file:
         df_bom_file = pd.read_excel(bom_file)
 with col2:        
-    quotation_file = st.file_uploader("Drop here your COSTS.xlsl file realted to your project", type="xlsx")
+    quotation_file = st.file_uploader("Drop here your COSTS.xlsl file realted to your project", type="xlsx", accept_multiple_files=False)
     if quotation_file:
         df_quotation_file = pd.read_excel(quotation_file)
     if st.button("Or insert quotation manually", use_container_width=True):
@@ -60,15 +61,16 @@ st.subheader("Report (BOM + Quotation)")
 if df_bom_file.empty or df_quotation_file.empty:
     st.caption("No data to show. Select the two files")
 else:
- 
-
     report = report_maker(df_bom_file,df_quotation_file)
-    st.dataframe(report, height=500)
+    st.dataframe(report,use_container_width=True)
     
     col1,col2,col3,col4 = st.columns(4)
     with col1:
         file_name = st.text_input("Project Name", placeholder="File name", label_visibility="collapsed")
+        if len(file_name)>0:
+            button_state = False
+        else:
+            button_state = True
     with col2:
-        if st.button("Export Report", type="primary"):
-            path_save = "./model/Reports/"
-            report.to_excel(path_save + file_name + ".xlsx")
+        df_xlsx = to_excel(report)
+        st.download_button(label="Export Excel",data=df_xlsx, file_name= file_name + ".xlsx", disabled=button_state, type="primary")
