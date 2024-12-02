@@ -1,9 +1,13 @@
 import streamlit as st
 import pandas as pd
 
-
+variable_gb_aux = True
 df_bom_quotation = pd.DataFrame()
-quotation_create_flag = False
+
+def set_global(variable):
+    global variable_gb_aux
+    variable_gb_aux = variable
+    return variable_gb_aux
 
 def load_to_dataframe (path, name):
     """

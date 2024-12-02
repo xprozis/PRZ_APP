@@ -1,6 +1,7 @@
 import streamlit as st
 from pages.shared.pageheader import *
 from controller.Data_Viewer import *
+import os
 
 path_reports = "./model/Reports"
 
@@ -11,7 +12,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-page_header("Hardware Logistics Viewer")
+page_header("Report Viewer")
 
 
 col1, col2, col3, col4 = st.columns(4)
