@@ -3,12 +3,22 @@ import pandas as pd
 from io import BytesIO
 import streamlit as st
 
+df_bom_table_edited = pd.DataFrame()
+df_bom_file_edited = pd.DataFrame()
+quantity_counter = 1
 
-variable_gb_aux = True
-df_bom_quotation = pd.DataFrame()
+
+def save_df_global(df):
+    global df_bom_file_edited
+    global quantity_counter
+
+    if df_bom_file_edited.empty:
+        df_bom_file_edited = df
+        reset_counter()
 
 
 def to_excel(df):
+    reset_counter()
     output = BytesIO()
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
     df.to_excel(writer, index=False, sheet_name='Sheet1')
@@ -20,21 +30,45 @@ def to_excel(df):
     processed_data = output.getvalue()
     return processed_data
 
-def set_global(variable):
-    global variable_gb_aux
-    variable_gb_aux = variable
-    return variable_gb_aux
 
-def load_to_dataframe(path, name):
-    """
-        Esta funcção carrega os ficheiros excel para um dataframe
-    """
-    df = pd.read_excel(path + name)
-    return df
+def column_add(value):
+    global quantity_counter
+    global df_bom_file_edited
+    
+    if quantity_counter == 0:
+        df_bom_file_edited['Provider_Name'] = "Provider"
 
-def report_maker(df1,df2):
-    """
-        Esta funcao vai juntar o Dataframe BOM com o Dataframe COST atraves de um LEFT-JOIN
-    """
-    df = pd.merge(df1, df2, how='left',on='1_MPN')
-    return df
+    df_bom_file_edited['Qty_PCBUnits_' + str(quantity_counter + 1)] = value
+    df_bom_file_edited['Qty_' + str(quantity_counter + 1)] = value * df_bom_file_edited['Qty']
+    quantity_counter+=1
+
+    return df_bom_file_edited
+
+
+def column_remove():
+    global quantity_counter
+    global df_bom_file_edited
+
+    if quantity_counter > 0:
+        df_bom_file_edited = df_bom_file_edited.iloc[:,:-2]
+        quantity_counter+=-1
+
+    return df_bom_file_edited
+
+def save_table_dataframe(df):
+    global df_bom_table_edited
+    df_bom_table_edited = df
+
+def load_dataframe():
+    return df_bom_file_edited
+
+def save_table_edits():
+    global df_bom_table_edited
+    global df_bom_file_edited
+    df_bom_file_edited = df_bom_table_edited
+    return df_bom_file_edited
+
+def reset_counter():
+    global quantity_counter
+    quantity_counter = 0
+

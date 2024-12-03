@@ -1,6 +1,6 @@
 import streamlit as st
 from pages.shared.pageheader import *
-from controller.BOM_Editor_c import *
+from controller.Report_Editor_c import *
 
 df_bom_file = pd.DataFrame()
 df_quotation_file = pd.DataFrame()
@@ -48,5 +48,4 @@ else:
         else:
             button_state = True
     with col2:
-        df_xlsx = to_excel(report)
-        st.download_button(label="Export Excel",data=df_xlsx, file_name= file_name + ".xlsx", disabled=button_state, type="primary")
+        st.download_button(label="Export Excel",data=to_excel(report), file_name= file_name + ".xlsx", disabled=button_state, type="primary")
