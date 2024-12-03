@@ -1,5 +1,5 @@
 import streamlit as st
-from pages.shared.pageheader import *
+from pages.shared.shared import *
 from controller.BOM_Editor_c import *
 from controller.Report_Editor_c import *
 import os
@@ -44,6 +44,7 @@ with col1:
             st.rerun()
 with col2:
     if not df_view.empty:
+        double_space()
         df_edited = st.data_editor(
             df_view,
             use_container_width=True,

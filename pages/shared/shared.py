@@ -7,3 +7,8 @@ def page_header(title, description):
     """
     st.title(title,help=description)
     st.divider()
+
+
+def double_space():
+    st.markdown("")
+    st.markdown("")
