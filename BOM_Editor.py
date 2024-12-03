@@ -19,7 +19,7 @@ st.set_page_config(
 page_header("BOM Editor","In this page the user can load, add and edit the BOM final quantities")
 
 # Carregar dados
-file = st.file_uploader("Drop here your BOM.xlsl file related to your project", type="xlsx")
+file = st.file_uploader("Drop here your BOM.xlsl file related to your project", type="xlsx", on_change=teste)
 if file:
     df = pd.read_excel(file)
     save_df_global(df)
@@ -28,8 +28,10 @@ if file:
 # Load data
 df_view = load_dataframe()
 
-if df_view.empty:
-    st.caption("No data to show.")
+
+if  df_view.empty:
+    st.divider()
+    st.caption("In this section, the user can drop the original BOM file, configure the right provideres and add the PCB quantitiies and items number.")
 
 col1, col2 = st.columns([1,5])
 

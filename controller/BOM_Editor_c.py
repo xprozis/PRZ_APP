@@ -8,6 +8,9 @@ df_bom_file_edited = pd.DataFrame()
 quantity_counter = 1
 
 
+def teste():
+    df_bom_file_edited.drop(df_bom_file_edited.index , inplace=True)
+
 def save_df_global(df):
     global df_bom_file_edited
     global quantity_counter
@@ -60,6 +63,7 @@ def save_table_dataframe(df):
     df_bom_table_edited = df
 
 def load_dataframe():
+    global df_bom_file_edited
     return df_bom_file_edited
 
 def save_table_edits():
