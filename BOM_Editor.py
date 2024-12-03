@@ -5,9 +5,7 @@ from controller.Report_Editor_c import *
 import os
 
 export_name_file = "BOM_for_quotation"
-df = pd.DataFrame()
 df_edited = pd.DataFrame()
-
 
 st.set_page_config(
     page_title="PROZIS HW Logistics",
@@ -24,17 +22,14 @@ if file:
     df = pd.read_excel(file)
     save_df_global(df)
 
-
 # Load data
 df_view = load_dataframe()
-
 
 if  df_view.empty:
     st.divider()
     st.caption("In this section, the user can drop the original BOM file, configure the right provideres and add the PCB quantitiies and items number.")
 
 col1, col2 = st.columns([1,5])
-
 with col1:
     if not df_view.empty:
         qty = st.number_input("ADD Columns with PCB quantities:", value= 0, min_value=0, step=500)
@@ -47,7 +42,6 @@ with col1:
         if st.button("Save Providers", use_container_width=True):
             df_view = save_table_edits()
             st.rerun()
-    
 with col2:
     if not df_view.empty:
         df_edited = st.data_editor(
@@ -67,7 +61,6 @@ with col2:
                 )
             }, hide_index=True)
         save_table_dataframe(df_edited)
-
 
 col1, col2 = st.columns([1,5])
 with col2:
