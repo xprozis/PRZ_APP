@@ -39,7 +39,7 @@ def column_add(value):
     global df_bom_file_edited
     
     if quantity_counter == 0:
-        df_bom_file_edited['Provider_Name'] = "Provider"
+        df_bom_file_edited['Provider_Name'] = "ARROW"
 
     df_bom_file_edited['Qty_PCBUnits_' + str(quantity_counter + 1)] = value
     df_bom_file_edited['Qty_' + str(quantity_counter + 1)] = value * df_bom_file_edited['Qty']
