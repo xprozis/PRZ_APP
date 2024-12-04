@@ -8,7 +8,7 @@ def page_header(title, description):
     st.title(title,help=description)
     st.divider()
 
-    st.image("./pages/shared\Logo_Prozis.png")
+    st.image("./pages/shared/Logo_Prozis.png")
     st.markdown(
     """
     <style>

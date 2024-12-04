@@ -21,7 +21,7 @@ def save_df_global(df):
    
 
 def clean_df():
-    df_file_raw.drop(df_file_raw.index , inplace=True)
+    df_file_raw_view_edit.drop(df_file_raw_view_edit.index , inplace=True)
 
 
 def df_view_load():
