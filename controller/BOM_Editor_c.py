@@ -8,16 +8,19 @@ df_bom_file_edited = pd.DataFrame()
 quantity_counter = 1
 
 
-def teste():
+def clean_df():
     df_bom_file_edited.drop(df_bom_file_edited.index , inplace=True)
 
 def save_df_global(df):
     global df_bom_file_edited
     global quantity_counter
+    global quantity_counter
 
     if df_bom_file_edited.empty:
         df_bom_file_edited = df
-        reset_counter()
+        df_bom_file_edited['Provider_Name'] = "Select Provider"
+        quantity_counter = 0
+   
 
 
 def to_excel(df):
@@ -37,14 +40,10 @@ def to_excel(df):
 def column_add(value):
     global quantity_counter
     global df_bom_file_edited
-    
-    if quantity_counter == 0:
-        df_bom_file_edited['Provider_Name'] = "ARROW"
 
     df_bom_file_edited['Qty_PCBUnits_' + str(quantity_counter + 1)] = value
     df_bom_file_edited['Qty_' + str(quantity_counter + 1)] = value * df_bom_file_edited['Qty']
     quantity_counter+=1
-
     return df_bom_file_edited
 
 
@@ -55,7 +54,6 @@ def column_remove():
     if quantity_counter > 0:
         df_bom_file_edited = df_bom_file_edited.iloc[:,:-2]
         quantity_counter+=-1
-
     return df_bom_file_edited
 
 def save_table_dataframe(df):
@@ -76,3 +74,8 @@ def reset_counter():
     global quantity_counter
     quantity_counter = 0
 
+
+def filter_dataframe_to_view(df,view_type):
+    if view_type == "Simple":
+        df = df.filter(items=['Qty', '1_MPN'])
+    return df
