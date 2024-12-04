@@ -8,6 +8,20 @@ def page_header(title, description):
     st.title(title,help=description)
     st.divider()
 
+    st.image("./pages/shared\Logo_Prozis.png")
+    st.markdown(
+    """
+    <style>
+        .st-emotion-cache-1v0mbdj.e115fcil1 {
+            position: fixed;
+            padding-top: 25rem;
+            opacity: 30%;
+        }
+
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 def double_space():
     st.markdown("")

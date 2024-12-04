@@ -8,9 +8,6 @@ df_file_raw_view_edit = pd.DataFrame()
 quantity_counter = 0
 
 
-def clean_df():
-    df_file_raw.drop(df_file_raw.index , inplace=True)
-
 def save_df_global(df):
     global df_file_raw
     global df_file_raw_view_edit
@@ -22,11 +19,16 @@ def save_df_global(df):
         quantity_counter = 0
         df_file_raw_view_edit['Provider_Name'] = "Quotation Provider"
    
+
+def clean_df():
+    df_file_raw.drop(df_file_raw.index , inplace=True)
+
+
 def df_view_load():
     global df_file_raw_view_edit
     return df_file_raw_view_edit
 
-    
+
 def save_df_view(df):
     global df_file_raw_view_edit
     df_file_raw_view_edit = df
@@ -34,7 +36,19 @@ def save_df_view(df):
 
 
 def to_excel(df):
-    reset_counter()
+    output = BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, index=False, sheet_name='Sheet1')
+    workbook = writer.book
+    worksheet = writer.sheets['Sheet1']
+    format1 = workbook.add_format({'num_format': '0.00'}) 
+    worksheet.set_column('A:A', None, format1)  
+    writer.close()
+    processed_data = output.getvalue()
+    return processed_data
+
+
+def to_excel_multiple(df):
     output = BytesIO()
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
     df.to_excel(writer, index=False, sheet_name='Sheet1')
@@ -52,7 +66,6 @@ def column_add(df,value):
 
     df['Qty_PCBUnits_' + str(quantity_counter + 1)] = value
     df['Qty_' + str(quantity_counter + 1)] = value * df['Qty']
-
     quantity_counter+=1
     return df
 
@@ -65,6 +78,7 @@ def column_remove(df):
     quantity_counter = 0
     df['Provider_Name'] = "Quotation Provider"
     return df
+
 
 def compare_df_df_raw(df):
     global df_file_raw
