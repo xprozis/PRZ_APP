@@ -11,7 +11,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-page_header("Quotation Editor","In this page the user can load, add and edit the BOM final quantities")
+page_header("Quotation Creator","In this page the user can load, add and edit the BOM final quantities")
 
 quotation_file = st.file_uploader("Drop here your Report.xlsl file related to your project", type="xlsx")
 if quotation_file:

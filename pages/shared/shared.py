@@ -12,7 +12,7 @@ def page_header(title, description):
     st.markdown(
     """
     <style>
-        .st-emotion-cache-1v0mbdj.e115fcil1 {
+        img {
             position: fixed;
             padding-top: 25rem;
             opacity: 30%;
