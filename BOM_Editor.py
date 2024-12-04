@@ -25,7 +25,7 @@ if file:
 # Carrega do ficheiro original para a página, desta forma o carregamento do ficheiro so se faz quando o utilizador assim o pretender
 df_view = df_view_load()
 
-# Pagina para quando nao há informacao
+# Principal conteudo da pagina (Tabelas botoes)
 if  df_view.empty:
     st.divider()
     st.caption("In this section, the user can drop the original BOM file, configure the right provideres and add the PCB quantitiies and items number. Please drop your BOM file")
