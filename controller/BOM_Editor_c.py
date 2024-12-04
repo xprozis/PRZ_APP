@@ -3,19 +3,22 @@ import pandas as pd
 from io import BytesIO
 import streamlit as st
 
+name_file = "BOM.xlsx"
 df_file_raw = pd.DataFrame()
 df_file_raw_view_edit = pd.DataFrame()
 quantity_counter = 0
 
 
-def save_df_global(df):
+def save_df_global(df, name):
+    global name_file
     global df_file_raw
     global df_file_raw_view_edit
     global quantity_counter
 
-    if df_file_raw.empty:
-        df_file_raw = df
+    if df_file_raw_view_edit.empty:
+        name_file = name
         df_file_raw_view_edit = df
+        df_file_raw = df
         quantity_counter = 0
         df_file_raw_view_edit['Provider_Name'] = "Quotation Provider"
    
@@ -33,6 +36,11 @@ def save_df_view(df):
     global df_file_raw_view_edit
     df_file_raw_view_edit = df
     return df_file_raw_view_edit
+
+
+def get_file_name():
+    global name_file
+    return name_file
 
 
 def to_excel(df):
@@ -61,16 +69,15 @@ def to_excel_multiple(df):
     return processed_data
 
 
-def column_add(df,value):
+def quantities_add(df,value):
     global quantity_counter
-
     df['Qty_PCBUnits_' + str(quantity_counter + 1)] = value
     df['Qty_' + str(quantity_counter + 1)] = value * df['Qty']
     quantity_counter+=1
     return df
 
 
-def column_remove(df):
+def quantities_remove(df):
     global quantity_counter
 
     if(quantity_counter > 0):
@@ -78,14 +85,6 @@ def column_remove(df):
     quantity_counter = 0
     df['Provider_Name'] = "Quotation Provider"
     return df
-
-
-def compare_df_df_raw(df):
-    global df_file_raw
-    if df.equals(df_file_raw):
-        return True
-    else:
-        return False
 
 
 def reset_counter():

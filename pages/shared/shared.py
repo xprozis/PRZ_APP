@@ -1,13 +1,20 @@
 import streamlit as st
 
+
+def single_space():
+    st.markdown("")
+
+def double_space():
+    st.markdown("")
+    st.markdown("")
+
 def page_header(title, description):
     """
     Gera um cabeçalho identico para todos
     
     """
     st.title(title,help=description)
-    st.divider()
-
+    single_space()
     st.image("./pages/shared/Logo_Prozis.png")
     st.markdown(
     """
@@ -23,6 +30,4 @@ def page_header(title, description):
     unsafe_allow_html=True
 )
 
-def double_space():
-    st.markdown("")
-    st.markdown("")
+

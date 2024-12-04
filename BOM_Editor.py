@@ -4,7 +4,7 @@ from controller.BOM_Editor_c import *
 from controller.Report_Editor_c import *
 import os
 
-export_name_file = "BOM_for_quotation"
+
 df_edited = pd.DataFrame()
 
 st.set_page_config(
@@ -20,7 +20,7 @@ page_header("BOM Editor","In this page the user can load, add and edit the BOM f
 file = st.file_uploader("Drop here your BOM.xlsl file related to your project", type="xlsx", on_change=clean_df)
 if file:
     df = pd.read_excel(file)
-    save_df_global(df)
+    save_df_global(df,file.name)
 
 # Carrega do ficheiro original para a página, desta forma o carregamento do ficheiro so se faz quando o utilizador assim o pretender
 df_view = df_view_load()
@@ -55,17 +55,15 @@ else:
         if qty > 0: button_state = False 
         else: button_state = True
         if st.button("➕", use_container_width=True, disabled = button_state):
-            df_view = column_add(df_view_table, qty)
+            df_view = quantities_add(df_view_table, qty)
             save_df_view(df_view)
             st.rerun()
-        if st.button("RESET", use_container_width=True):
-            df_view = column_remove(df_view_table)
+        if st.button("Clean Quantities", use_container_width=True):
+            df_view = quantities_remove(df_view_table)
             save_df_view(df_view)
             st.rerun()
         
         
         st.divider()
-        if st.download_button(label="Export all report", data = to_excel(df_view_table), file_name= export_name_file + ".xlsx", use_container_width=True, type="primary"):
-            st.success('File created')
-        if st.download_button(label="Export by provider", data = to_excel_multiple(df_view_table), file_name= export_name_file + ".xlsx", use_container_width=True, type="primary"):
+        if st.download_button(label="Export BOM File", data = to_excel(df_view_table), file_name = "Qty_" + get_file_name(), use_container_width=True, type="primary"):
             st.success('File created')
