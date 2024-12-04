@@ -3,24 +3,34 @@ import pandas as pd
 from io import BytesIO
 import streamlit as st
 
-df_bom_table_edited = pd.DataFrame()
-df_bom_file_edited = pd.DataFrame()
-quantity_counter = 1
+df_file_raw = pd.DataFrame()
+df_file_raw_view_edit = pd.DataFrame()
+quantity_counter = 0
 
 
 def clean_df():
-    df_bom_file_edited.drop(df_bom_file_edited.index , inplace=True)
+    df_file_raw.drop(df_file_raw.index , inplace=True)
 
 def save_df_global(df):
-    global df_bom_file_edited
-    global quantity_counter
+    global df_file_raw
+    global df_file_raw_view_edit
     global quantity_counter
 
-    if df_bom_file_edited.empty:
-        df_bom_file_edited = df
-        df_bom_file_edited['Provider_Name'] = "Select Provider"
+    if df_file_raw.empty:
+        df_file_raw = df
+        df_file_raw_view_edit = df
         quantity_counter = 0
+        df_file_raw_view_edit['Provider_Name'] = "Quotation Provider"
    
+def df_view_load():
+    global df_file_raw_view_edit
+    return df_file_raw_view_edit
+
+    
+def save_df_view(df):
+    global df_file_raw_view_edit
+    df_file_raw_view_edit = df
+    return df_file_raw_view_edit
 
 
 def to_excel(df):
@@ -37,38 +47,33 @@ def to_excel(df):
     return processed_data
 
 
-def column_add(value):
+def column_add(df,value):
     global quantity_counter
-    global df_bom_file_edited
 
-    df_bom_file_edited['Qty_PCBUnits_' + str(quantity_counter + 1)] = value
-    df_bom_file_edited['Qty_' + str(quantity_counter + 1)] = value * df_bom_file_edited['Qty']
+    df['Qty_PCBUnits_' + str(quantity_counter + 1)] = value
+    df['Qty_' + str(quantity_counter + 1)] = value * df['Qty']
+
     quantity_counter+=1
-    return df_bom_file_edited
+    return df
 
 
-def column_remove():
+def column_remove(df):
     global quantity_counter
-    global df_bom_file_edited
+    
+    if(quantity_counter > 0):
+        df = df[df.columns[:-2*quantity_counter]]
+    quantity_counter = 0
 
-    if quantity_counter > 0:
-        df_bom_file_edited = df_bom_file_edited.iloc[:,:-2]
-        quantity_counter+=-1
-    return df_bom_file_edited
+    df['Provider_Name'] = "Quotation Provider"
+    return df
 
-def save_table_dataframe(df):
-    global df_bom_table_edited
-    df_bom_table_edited = df
+def compare_df_df_raw(df):
+    global df_file_raw
+    if df.equals(df_file_raw):
+        return True
+    else:
+        return False
 
-def load_dataframe():
-    global df_bom_file_edited
-    return df_bom_file_edited
-
-def save_table_edits():
-    global df_bom_table_edited
-    global df_bom_file_edited
-    df_bom_file_edited = df_bom_table_edited
-    return df_bom_file_edited
 
 def reset_counter():
     global quantity_counter
