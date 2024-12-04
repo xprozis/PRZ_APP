@@ -59,11 +59,10 @@ def column_add(df,value):
 
 def column_remove(df):
     global quantity_counter
-    
+
     if(quantity_counter > 0):
         df = df[df.columns[:-2*quantity_counter]]
     quantity_counter = 0
-
     df['Provider_Name'] = "Quotation Provider"
     return df
 
