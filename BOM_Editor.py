@@ -66,6 +66,6 @@ else:
         
         st.divider()
         if st.download_button(label="Export all report", data = to_excel(df_view_table), file_name= export_name_file + ".xlsx", use_container_width=True, type="primary"):
-            st.success('File created', icon="✅")
+            st.success('File created')
         if st.download_button(label="Export by provider", data = to_excel_multiple(df_view_table), file_name= export_name_file + ".xlsx", use_container_width=True, type="primary"):
-            st.success('File created', icon="✅")
+            st.success('File created')
