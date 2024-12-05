@@ -5,37 +5,43 @@ import streamlit as st
 
 name_file = "BOM.xlsx"
 df_file_raw = pd.DataFrame()
-df_file_raw_view_edit = pd.DataFrame()
+df_file_edit = pd.DataFrame()
+df_table = pd.DataFrame()
 quantity_counter = 0
 
 
 def save_df_global(df, name):
     global name_file
     global df_file_raw
-    global df_file_raw_view_edit
+    global df_file_edit
     global quantity_counter
 
-    if df_file_raw_view_edit.empty:
+    if df_file_edit.empty:
         name_file = name
-        df_file_raw_view_edit = df
+        df_file_edit = df
         df_file_raw = df
         quantity_counter = 0
-        df_file_raw_view_edit['Provider_Name'] = "Quotation Provider"
+        df_file_edit['Provider_Name'] = "Quotation Provider"
    
 
 def clean_df():
-    df_file_raw_view_edit.drop(df_file_raw_view_edit.index , inplace=True)
+    df_file_edit.drop(df_file_edit.index , inplace=True)
 
 
 def df_view_load():
-    global df_file_raw_view_edit
-    return df_file_raw_view_edit
+    global df_file_edit
+    return df_file_edit
 
 
 def save_df_view(df):
-    global df_file_raw_view_edit
-    df_file_raw_view_edit = df
-    return df_file_raw_view_edit
+    global df_file_edit
+    df_file_edit = df
+    return df_file_edit
+
+
+def save_df_table_edit(df):
+    global df_table
+    df_table = df
 
 
 def get_file_name():
@@ -96,3 +102,5 @@ def filter_dataframe_to_view(df,view_type):
     if view_type == "Simple":
         df = df.filter(items=['Qty', '1_MPN'])
     return df
+
+

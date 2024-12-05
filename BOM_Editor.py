@@ -1,11 +1,6 @@
 import streamlit as st
 from pages.shared.shared import *
 from controller.BOM_Editor_c import *
-from controller.Report_Editor_c import *
-import os
-
-
-df_edited = pd.DataFrame()
 
 st.set_page_config(
     page_title="PROZIS HW Logistics",
@@ -50,6 +45,9 @@ else:
                     required=True,
                 )}, hide_index=True)
         
+        # Always saving the edits from the table
+        save_df_table_edit(df_view_table)
+    
     with col1:
         qty = st.number_input("ADD Columns with PCB quantities:", value= 0, min_value=0, step=500)
         if qty > 0: button_state = False 
@@ -58,12 +56,9 @@ else:
             df_view = quantities_add(df_view_table, qty)
             save_df_view(df_view)
             st.rerun()
-        if st.button("Clean Quantities", use_container_width=True):
+        if st.button("Refresh data", use_container_width=True):
             df_view = quantities_remove(df_view_table)
             save_df_view(df_view)
             st.rerun()
-        
-        
-        st.divider()
         if st.download_button(label="Export BOM File", data = to_excel(df_view_table), file_name = "Qty_" + get_file_name(), use_container_width=True, type="primary"):
             st.success('File created')
